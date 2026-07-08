@@ -1,0 +1,12 @@
+body {
+	padding: 0;
+	color: var(--vscode-foreground);
+}
+
+#root {
+	height: 100vh;
+
+	* {
+		box-sizing: border-box;
+	}
+}

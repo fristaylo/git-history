@@ -1,0 +1,42 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "bun run build",
+			"group": "build",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "silent",
+				"clear": true
+			}
+		},
+		{
+			"label": "watch",
+			"type": "shell",
+			"command": "bun run watch",
+			"isBackground": true,
+			"group": "build",
+			"problemMatcher": {
+				"pattern": [
+					{
+						"regexp": ".",
+						"file": 1,
+						"location": 2,
+						"message": 3
+					}
+				],
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "build started",
+					"endsPattern": "built in"
+				}
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		}
+	]
+}

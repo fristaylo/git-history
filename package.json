@@ -1,0 +1,635 @@
+{
+	"name": "yummy-githistory",
+	"displayName": "Yummy GitHistory",
+	"description": "Git history panel in your VS Code",
+	"keywords": [
+		"git",
+		"log",
+		"diff",
+		"history",
+		"graph",
+		"branch",
+		"commit",
+		"scm",
+		"flow",
+		"tag"
+	],
+	"version": "1.0.0",
+	"license": "MIT",
+	"icon": "assets/logo/logo.png",
+	"publisher": "YummyGroup",
+	"engines": {
+		"vscode": "^1.97.0"
+	},
+	"categories": ["Other", "SCM Providers"],
+	"main": "./dist/extension.js",
+	"activationEvents": [],
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "git-history",
+					"title": "Git History",
+					"icon": "assets/logo/logo.svg"
+				}
+			]
+		},
+		"views": {
+			"git-history": [
+				{
+					"id": "git-history.branches",
+					"name": "Branches",
+					"type": "tree",
+					"icon": "assets/logo/logo.svg"
+				},
+				{
+					"id": "git-history.history",
+					"name": "History",
+					"type": "webview",
+					"icon": "assets/logo/logo.svg"
+				},
+				{
+					"id": "git-history.changes",
+					"name": "Changes",
+					"type": "tree",
+					"icon": "assets/logo/logo.svg"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "git-history.history.switch.branch",
+				"title": "Switch Branch / Ref",
+				"category": "Git History",
+				"icon": "$(git-branch)"
+			},
+			{
+				"command": "git-history.history.switch.repo",
+				"title": "Switch Repository",
+				"category": "Git History",
+				"icon": "$(repo)"
+			},
+			{
+				"command": "git-history.history.filter.author",
+				"title": "Filter by Author",
+				"category": "Git History",
+				"icon": "$(account)"
+			},
+			{
+				"command": "git-history.history.filter.message",
+				"title": "Filter by Message",
+				"category": "Git History",
+				"icon": "$(search)"
+			},
+			{
+				"command": "git-history.history.input.hash",
+				"title": "Locate Commit by Hash",
+				"category": "Git History",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "git-history.history.refresh",
+				"title": "Refresh",
+				"category": "Git History",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "git-history.history.reset",
+				"title": "Reset Filters",
+				"category": "Git History",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "git-history.branches.switchTo",
+				"title": "Show Branch History",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.refresh",
+				"title": "Refresh",
+				"category": "Git History",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "git-history.branches.openHistory",
+				"title": "View History",
+				"category": "Git History",
+				"icon": "$(history)"
+			},
+			{
+				"command": "git-history.branches.createBranch",
+				"title": "Create Branch",
+				"category": "Git History",
+				"icon": "$(add)"
+			},
+			{
+				"command": "git-history.branches.update",
+				"title": "Update Branch",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.checkout",
+				"title": "Checkout",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.merge",
+				"title": "Merge into Current...",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.rebase",
+				"title": "Rebase onto This Branch",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.checkoutAndRebase",
+				"title": "Checkout and Rebase onto Current",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.cherryPick",
+				"title": "Cherry-pick Tip Commit",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.rename",
+				"title": "Rename Branch",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.push",
+				"title": "Push",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.setUpstream",
+				"title": "Set Upstream",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.createFrom",
+				"title": "Create Branch from Here",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.deleteLocal",
+				"title": "Delete Branch",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.compareWithCurrent",
+				"title": "Compare with Current",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.checkoutRemote",
+				"title": "Checkout (Create Tracking Branch)",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.pull",
+				"title": "Fetch",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.pullIntoCurrent",
+				"title": "Pull into Current Branch...",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.deleteRemote",
+				"title": "Delete Remote Branch",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.fetchAll",
+				"title": "Fetch All",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.stash",
+				"title": "Stash Changes",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.stashPop",
+				"title": "Pop Stash",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.stashApply",
+				"title": "Apply Stash...",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.stashDrop",
+				"title": "Drop Stash...",
+				"category": "Git History"
+			},
+			{
+				"command": "git-history.branches.hideRepository",
+				"title": "Hide Repository",
+				"category": "Git History",
+				"icon": "$(eye-closed)"
+			},
+			{
+				"command": "git-history.branches.showHiddenRepository",
+				"title": "Show Hidden Repository...",
+				"category": "Git History",
+				"icon": "$(eye)"
+			},
+			{
+				"command": "git-history.history.toggleColumns",
+				"title": "Toggle Columns",
+				"category": "Git History",
+				"icon": "$(list-selection)"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "git-history.history.switch.branch",
+					"when": "view == git-history.history",
+					"group": "navigation@1"
+				},
+				{
+					"command": "git-history.history.switch.repo",
+					"when": "view == git-history.history",
+					"group": "navigation@2"
+				},
+				{
+					"command": "git-history.history.filter.author",
+					"when": "view == git-history.history",
+					"group": "navigation@3"
+				},
+				{
+					"command": "git-history.history.filter.message",
+					"when": "view == git-history.history",
+					"group": "navigation@4"
+				},
+				{
+					"command": "git-history.history.input.hash",
+					"when": "view == git-history.history",
+					"group": "navigation@5"
+				},
+				{
+					"command": "git-history.history.refresh",
+					"when": "view == git-history.history",
+					"group": "navigation@6"
+				},
+				{
+					"command": "git-history.history.reset",
+					"when": "view == git-history.history",
+					"group": "navigation@7"
+				},
+				{
+					"command": "git-history.history.toggleColumns",
+					"when": "view == git-history.history",
+					"group": "navigation@8"
+				},
+				{
+					"command": "git-history.branches.createBranch",
+					"when": "view == git-history.branches",
+					"group": "navigation@1"
+				},
+				{
+					"command": "git-history.branches.refresh",
+					"when": "view == git-history.branches",
+					"group": "navigation@2"
+				},
+				{
+					"command": "git-history.branches.showHiddenRepository",
+					"when": "view == git-history.branches",
+					"group": "9_visibility@1"
+				},
+				{
+					"command": "git-history.branches.hideRepository",
+					"when": "view == git-history.branches",
+					"group": "9_visibility@2"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "git-history.branches.openHistory",
+					"when": "view == git-history.branches && viewItem == localBranchCurrent",
+					"group": "inline"
+				},
+				{
+					"command": "git-history.branches.openHistory",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "inline"
+				},
+				{
+					"command": "git-history.branches.openHistory",
+					"when": "view == git-history.branches && viewItem == remoteBranch",
+					"group": "inline"
+				},
+				{
+					"command": "git-history.branches.createBranch",
+					"when": "view == git-history.branches && viewItem == localGroup",
+					"group": "1_actions@1"
+				},
+				{
+					"command": "git-history.branches.stash",
+					"when": "view == git-history.branches && viewItem == localGroup",
+					"group": "1_actions@2"
+				},
+				{
+					"command": "git-history.branches.stashPop",
+					"when": "view == git-history.branches && viewItem == localGroup",
+					"group": "1_actions@3"
+				},
+				{
+					"command": "git-history.branches.stashApply",
+					"when": "view == git-history.branches && viewItem == localGroup",
+					"group": "1_actions@4"
+				},
+				{
+					"command": "git-history.branches.stashDrop",
+					"when": "view == git-history.branches && viewItem == localGroup",
+					"group": "1_actions@5"
+				},
+				{
+					"command": "git-history.branches.fetchAll",
+					"when": "view == git-history.branches && (viewItem == remoteSection || viewItem == remoteGroup)",
+					"group": "1_actions@1"
+				},
+				{
+					"command": "git-history.branches.createFrom",
+					"when": "view == git-history.branches && viewItem == localBranchCurrent",
+					"group": "1_checkout@1"
+				},
+				{
+					"command": "git-history.branches.update",
+					"when": "view == git-history.branches && viewItem == localBranchCurrent",
+					"group": "2_sync@1"
+				},
+				{
+					"command": "git-history.branches.push",
+					"when": "view == git-history.branches && viewItem == localBranchCurrent",
+					"group": "2_sync@2"
+				},
+				{
+					"command": "git-history.branches.setUpstream",
+					"when": "view == git-history.branches && viewItem == localBranchCurrent",
+					"group": "2_sync@3"
+				},
+				{
+					"command": "git-history.branches.rename",
+					"when": "view == git-history.branches && viewItem == localBranchCurrent",
+					"group": "3_manage@1"
+				},
+				{
+					"command": "git-history.branches.checkout",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "1_checkout@1"
+				},
+				{
+					"command": "git-history.branches.createFrom",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "1_checkout@2"
+				},
+				{
+					"command": "git-history.branches.compareWithCurrent",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "1_checkout@3"
+				},
+				{
+					"command": "git-history.branches.update",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "2_integrate@1"
+				},
+				{
+					"command": "git-history.branches.merge",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "2_integrate@2"
+				},
+				{
+					"command": "git-history.branches.rebase",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "2_integrate@3"
+				},
+				{
+					"command": "git-history.branches.checkoutAndRebase",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "2_integrate@4"
+				},
+				{
+					"command": "git-history.branches.cherryPick",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "2_integrate@5"
+				},
+				{
+					"command": "git-history.branches.push",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "3_sync@1"
+				},
+				{
+					"command": "git-history.branches.setUpstream",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "3_sync@2"
+				},
+				{
+					"command": "git-history.branches.rename",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "4_manage@1"
+				},
+				{
+					"command": "git-history.branches.deleteLocal",
+					"when": "view == git-history.branches && viewItem == localBranch",
+					"group": "5_destructive@1"
+				},
+				{
+					"command": "git-history.branches.checkoutRemote",
+					"when": "view == git-history.branches && viewItem == remoteBranch",
+					"group": "1_checkout@1"
+				},
+				{
+					"command": "git-history.branches.compareWithCurrent",
+					"when": "view == git-history.branches && viewItem == remoteBranch",
+					"group": "1_checkout@2"
+				},
+				{
+					"command": "git-history.branches.pullIntoCurrent",
+					"when": "view == git-history.branches && viewItem == remoteBranch",
+					"group": "2_integrate@1"
+				},
+				{
+					"command": "git-history.branches.cherryPick",
+					"when": "view == git-history.branches && viewItem == remoteBranch",
+					"group": "2_integrate@2"
+				},
+				{
+					"command": "git-history.branches.pull",
+					"when": "view == git-history.branches && viewItem == remoteBranch",
+					"group": "3_sync@1"
+				},
+				{
+					"command": "git-history.branches.deleteRemote",
+					"when": "view == git-history.branches && viewItem == remoteBranch",
+					"group": "4_destructive@1"
+				},
+				{
+					"command": "git-history.branches.hideRepository",
+					"when": "view == git-history.branches && viewItem == repository",
+					"group": "inline"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "git-history.history.filter.author",
+					"when": "false"
+				},
+				{
+					"command": "git-history.history.filter.message",
+					"when": "false"
+				},
+				{
+					"command": "git-history.history.input.hash",
+					"when": "false"
+				},
+				{
+					"command": "git-history.history.reset",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.switchTo",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.openHistory",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.update",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.checkout",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.merge",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.rebase",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.checkoutAndRebase",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.cherryPick",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.rename",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.push",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.setUpstream",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.createFrom",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.deleteLocal",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.compareWithCurrent",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.checkoutRemote",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.pull",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.pullIntoCurrent",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.deleteRemote",
+					"when": "false"
+				},
+				{
+					"command": "git-history.branches.hideRepository",
+					"when": "false"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "bun run package",
+		"build": "bun run build:extension && bun run build:worker && bun run build:view",
+		"build:extension": "vite build --config vite.extension.config.ts",
+		"build:worker": "vite build --config vite.worker.config.ts",
+		"build:view": "vite build --config vite.config.ts",
+		"package": "cross-env NODE_ENV=production bun run build",
+		"compile": "bun run build",
+		"watch": "concurrently -k \"bun run watch:extension\" \"bun run watch:worker\" \"bun run watch:view\"",
+		"watch:extension": "vite build --watch --config vite.extension.config.ts",
+		"watch:worker": "vite build --watch --config vite.worker.config.ts",
+		"watch:view": "vite build --watch --config vite.config.ts",
+		"typecheck": "tsc --noEmit",
+		"format": "biome format --write .",
+		"lint": "biome lint .",
+		"check": "biome check --write .",
+		"prepare": "simple-git-hooks"
+	},
+	"simple-git-hooks": {
+		"pre-commit": "bun run typecheck"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@swc/core": "^1.10.7",
+		"@types/lodash": "^4.17.14",
+		"@types/node": "^22.10.7",
+		"@types/react": "^17.0.83",
+		"@types/react-dom": "^17.0.25",
+		"@types/vscode": "^1.97.0",
+		"@types/which": "^3.0.4",
+		"@vitejs/plugin-react": "^4.3.4",
+		"concurrently": "^9.1.2",
+		"cross-env": "^7.0.3",
+		"sass": "^1.83.4",
+		"simple-git-hooks": "^2.11.1",
+		"typescript": "^5.7.3",
+		"unplugin-swc": "^1.5.1",
+		"vite": "^6.0.7",
+		"vite-plugin-css-injected-by-js": "^3.5.2"
+	},
+	"dependencies": {
+		"@use-gesture/react": "^10.1.3",
+		"@vscode/codicons": "^0.0.30",
+		"@vscode/webview-ui-toolkit": "^1.0.0",
+		"classnames": "^2.3.1",
+		"dayjs": "^1.10.7",
+		"iconv-lite-umd": "^0.6.8",
+		"inversify": "^6.0.1",
+		"lodash": "^4.17.21",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-use": "^17.4.0",
+		"react-virtual": "^2.8.2",
+		"reflect-metadata": "^0.1.13",
+		"simple-git": "^2.47.0",
+		"threads": "^1.7.0",
+		"vscode-nls": "^5.0.0",
+		"which": "^2.0.2"
+	},
+	"trustedDependencies": ["@biomejs/biome", "@swc/core"]
+}

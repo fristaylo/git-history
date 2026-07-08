@@ -1,0 +1,45 @@
+.container {
+	overflow: overlay !important;
+	height: 100%;
+	user-select: none;
+
+	padding: 1px;
+}
+
+.item {
+	width: 100%;
+
+	&:hover {
+		background-color: var(--vscode-list-hoverBackground);
+	}
+
+	&.picked {
+		background-color: var(--vscode-list-activeSelectionBackground);
+		color: var(--vscode-list-activeSelectionForeground);
+		outline: 1px solid var(--vscode-list-focusOutline);
+	}
+
+	&:not(.picked) {
+		opacity: 0.7;
+	}
+
+	@keyframes blink {
+		0% {
+			background-color: transparent;
+		}
+
+		50% {
+			background-color: var(--vscode-list-highlightForeground);
+		}
+
+		100% {
+			background-color: transparent;
+		}
+	}
+
+	&.located {
+		animation-name: blink;
+		animation-delay: 0.1s;
+		animation-duration: 1.4s;
+	}
+}
