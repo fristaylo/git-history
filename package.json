@@ -18,6 +18,14 @@
 	"license": "MIT",
 	"icon": "assets/logo/logo.png",
 	"publisher": "YummyGroup",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yummyanime/yummy-githistory.git"
+	},
+	"bugs": {
+		"url": "https://github.com/yummyanime/yummy-githistory/issues"
+	},
+	"homepage": "https://github.com/yummyanime/yummy-githistory#readme",
 	"engines": {
 		"vscode": "^1.97.0"
 	},
