@@ -2,6 +2,12 @@
 
 All notable changes to the "Yummy GitHistory" extension are documented in this file.
 
+## [1.0.1] - 2026-07-08
+
+### Changed
+
+- Maintenance release: rebuilt extension bundle and refreshed the packaged artifact.
+
 ## [1.0.0] - 2026-07-08
 
 ### Added
