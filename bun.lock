@@ -29,7 +29,7 @@
         "@types/node": "^22.10.7",
         "@types/react": "^17.0.83",
         "@types/react-dom": "^17.0.25",
-        "@types/vscode": "^1.97.0",
+        "@types/vscode": "~1.74.0",
         "@types/which": "^3.0.4",
         "@vitejs/plugin-react": "^4.3.4",
         "concurrently": "^9.1.2",
@@ -324,7 +324,7 @@
 
     "@types/scheduler": ["@types/scheduler@0.16.8", "", {}, "sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A=="],
 
-    "@types/vscode": ["@types/vscode@1.125.0", "", {}, "sha512-0icm/ZQAaism87P0ekHqi4/Ju9du+Tm0RUW+y7vqRsxY2cY0FNRX1nAnaW7nT6npPt2tfHiheZ55Zm9UhqonFA=="],
+    "@types/vscode": ["@types/vscode@1.74.1", "", {}, "sha512-/4bwu5Lz2tQIhCDfGyEho36jEBHfEGgbuajgFZgRIfsfK/U0vv8diYIvQRiz8cc9tGlzd7m/NJscEJ7gFExJ4g=="],
 
     "@types/which": ["@types/which@3.0.4", "", {}, "sha512-liyfuo/106JdlgSchJzXEQCVArk0CvevqPote8F8HgWgJ3dRCcTHgJIsLDuee0kxk/mhbInzIZk3QWSZJ8R+2w=="],
 

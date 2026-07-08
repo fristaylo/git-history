@@ -14,7 +14,7 @@
 		"flow",
 		"tag"
 	],
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"license": "MIT",
 	"icon": "assets/logo/logo.png",
 	"publisher": "YummyGroup",
@@ -27,7 +27,7 @@
 	},
 	"homepage": "https://github.com/yummyanime/yummy-githistory#readme",
 	"engines": {
-		"vscode": "^1.97.0"
+		"vscode": "^1.74.0"
 	},
 	"categories": ["Other", "SCM Providers"],
 	"main": "./dist/extension.js",
@@ -608,7 +608,7 @@
 		"@types/node": "^22.10.7",
 		"@types/react": "^17.0.83",
 		"@types/react-dom": "^17.0.25",
-		"@types/vscode": "^1.97.0",
+		"@types/vscode": "~1.74.0",
 		"@types/which": "^3.0.4",
 		"@vitejs/plugin-react": "^4.3.4",
 		"concurrently": "^9.1.2",

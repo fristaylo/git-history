@@ -2,6 +2,13 @@
 
 All notable changes to the "Yummy GitHistory" extension are documented in this file.
 
+## [1.0.2] - 2026-07-08
+
+### Changed
+
+- Refreshed the commit-graph color palette for better contrast and readability.
+- Lowered the minimum required VS Code version to `1.74.0` for broader compatibility.
+
 ## [1.0.1] - 2026-07-08
 
 ### Changed

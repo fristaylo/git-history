@@ -79,7 +79,7 @@ export class GitGraph {
 	}
 
 	private getSingleLineGraphSlice(hash: string, parents: string[]) {
-		const commitColor = "#06A77D";
+		const commitColor = "#FF6666";
 
 		const lines = [];
 		if (this.curParents.includes(hash)) {
@@ -205,13 +205,12 @@ export class GitGraph {
 function getColorPicker() {
 	let index = -1;
 	const colors = [
-		"#06A77D",
-		"#C62E65",
-		"#005377",
-		"#D5C67A",
-		"#F1A208",
-		"#D36135",
-		"#D63AF9",
+		"#FF6666",
+		"#148DFF",
+		"#BE46C6",
+		"#3CCE7B",
+		"#AF75E4",
+		"#F2B800",
 	];
 	return {
 		get() {

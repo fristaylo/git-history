@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/logo/logo.png" width="128" alt="Yummy GitHistory logo" />
-</p>
-
 <h1 align="center">Yummy GitHistory</h1>
 
 <p align="center">A fast, graphical Git history panel right inside VS Code.</p>
@@ -12,14 +8,14 @@ Yummy GitHistory adds a dedicated **Git History** activity-bar container with th
 
 ## Features
 
-- 📜 **Commit graph & history** — a virtualized, high-performance history view with the branch graph rendered inline.
-- 🌿 **Branch management** — create, checkout, rename, delete, compare, push, pull, fetch, set upstream, and track remote branches.
-- 🔀 **Integrate branches** — merge, rebase, checkout-and-rebase, and cherry-pick straight from the branches list.
-- 📦 **Stash support** — stash, pop, apply, and drop changes.
-- 🔍 **Filtering & search** — filter history by author or commit message, and locate a commit by its hash.
-- 🗂️ **Changes view** — see the files touched by the selected commit and open diffs.
-- 🧩 **Multi-repository** — switch between repositories and hide the ones you don't need.
-- ⚙️ **Configurable columns** — toggle which columns appear in the history view.
+- **Commit graph & history** — a virtualized, high-performance history view with the branch graph rendered inline.
+- **Branch management** — create, checkout, rename, delete, compare, push, pull, fetch, set upstream, and track remote branches.
+- **Integrate branches** — merge, rebase, checkout-and-rebase, and cherry-pick straight from the branches list.
+- **Stash support** — stash, pop, apply, and drop changes.
+- **Filtering & search** — filter history by author or commit message, and locate a commit by its hash.
+- **Changes view** — see the files touched by the selected commit and open diffs.
+- **Multi-repository** — switch between repositories and hide the ones you don't need.
+- **Configurable columns** — toggle which columns appear in the history view.
 
 ## Getting started
 
@@ -29,8 +25,7 @@ Yummy GitHistory adds a dedicated **Git History** activity-bar container with th
 
 ## Requirements
 
-- VS Code `1.97.0` or newer.
-- Git installed and available on your `PATH`.
+- VS Code `1.74.0` or newer.
 
 ## Commands
 
