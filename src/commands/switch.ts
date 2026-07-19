@@ -35,8 +35,11 @@ export function getSwitchCommandsDisposable() {
 				return;
 			}
 
+			const repo = gitService.getDefaultRepository();
+			state.followHead = true;
 			state.logOptions = {
-				repo: await gitService.getDefaultRepository(),
+				repo,
+				ref: gitService.getCurrentBranch(repo),
 			};
 			source.getCommits(switchSubscriber, state.logOptions);
 		}),
@@ -136,6 +139,7 @@ export function getSwitchCommandsDisposable() {
 				}
 
 				const { repo } = state.logOptions;
+				state.followHead = false;
 				state.logOptions = { repo, ref };
 				source.getCommits(switchSubscriber, state.logOptions);
 				quickPick.dispose();

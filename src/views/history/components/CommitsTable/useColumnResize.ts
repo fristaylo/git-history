@@ -3,9 +3,7 @@ import { sum } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import type { IHeader } from "./constants";
 
-const MIN_COLUMN_WIDTH = 8;
-const SIZES_STORAGE_KEY = "git-history.columnSizes.v2";
-
+const SIZES_STORAGE_KEY = "culumn-size";
 const AUTO_HIDE_ORDER = ["hash", "graph"];
 
 export function useColumnResize(
@@ -45,8 +43,8 @@ export function useColumnResize(
 		newSizes[index - 1] = newSizes[index - 1] + mx;
 
 		const isExceedSize =
-			newSizes[index] < MIN_COLUMN_WIDTH ||
-			newSizes[index - 1] < MIN_COLUMN_WIDTH;
+			newSizes[index] < 8 ||
+			newSizes[index - 1] < 8;
 
 		if (!isExceedSize) {
 			setRealTimeSizes(newSizes);

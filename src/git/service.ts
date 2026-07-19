@@ -112,6 +112,14 @@ export class GitService {
 		);
 	}
 
+	getCurrentBranch(repo?: string) {
+		const target = repo || this.getDefaultRepository();
+		const repository = this.getGitRepositories().find(
+			({ rootUri }) => rootUri.fsPath === target
+		);
+		return repository?.state.HEAD?.name ?? "";
+	}
+
 	getRefs(options: GitOptions) {
 		const { repo = this.rootRepoPath } = options;
 		return this.git

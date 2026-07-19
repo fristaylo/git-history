@@ -51,7 +51,24 @@ export class Source {
 		private git: GitService,
 		private graph: GitGraph,
 		private ChangeTreeDataProvider: ChangeTreeDataProvider
-	) {}
+	) {
+		this.git.onDidChangeGitState(() => this.syncDefaultRef());
+	}
+
+	private syncDefaultRef() {
+		if (!state.followHead) {
+			return;
+		}
+		const ref = this.git.getCurrentBranch(state.logOptions.repo);
+		if (ref === (state.logOptions.ref ?? "")) {
+			return;
+		}
+		state.logOptions.ref = ref;
+		const switchSubscriber = this.getSwitchSubscriber();
+		if (switchSubscriber) {
+			this.getCommits(switchSubscriber, state.logOptions);
+		}
+	}
 
 	getSwitchSubscriber() {
 		return this.switchSubscriber;
@@ -230,8 +247,10 @@ export class Source {
 		);
 
 		if (!state.logOptions.repo) {
+			const repo = this.git.getDefaultRepository();
 			state.logOptions = {
-				repo: await this.git.getDefaultRepository(),
+				repo,
+				ref: this.git.getCurrentBranch(repo),
 			};
 		}
 		debouncedRefresh();
