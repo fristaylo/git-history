@@ -6,6 +6,11 @@ $col-padding-right: 8px;
 	flex-direction: column;
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
+}
+
+.header-viewport {
+	overflow: hidden;
 }
 
 .commit-headers {
@@ -15,26 +20,34 @@ $col-padding-right: 8px;
 	margin-top: 4px;
 
 	.header-item {
+		position: relative;
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
+		padding-left: $col-divider-width;
 		padding-right: $col-padding-right;
 
-		&:first-child {
-			padding-left: $col-divider-width;
-		}
-
 		> .divider {
-			cursor: col-resize;
+			position: absolute;
+			left: -2px;
+			top: 50%;
+			transform: translateY(-50%);
 			width: $col-divider-width;
 			height: 12px;
+			cursor: col-resize;
 			border-left: 1px solid var(--vscode-foreground);
 		}
 
-		> span {
-			margin-right: 8px;
+		.header-label {
+			min-width: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 
-		.ref-button {
+		.ref-button,
+		.header-action {
+			min-width: 0;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			max-width: 100%;
@@ -46,7 +59,13 @@ $col-padding-right: 8px;
 				max-width: 240px;
 				padding: 0 4px;
 				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
+		}
+
+		.header-action.active .text {
+			color: var(--vscode-textLink-foreground);
 		}
 	}
 }
@@ -62,6 +81,7 @@ $col-padding-right: 8px;
 		height: 22px;
 
 		> span {
+			flex-shrink: 0;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;

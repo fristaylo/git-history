@@ -1,15 +1,17 @@
 import { useDrag } from "@use-gesture/react";
-import { useEffect, useMemo, useState } from "react";
 import { sum } from "lodash";
-
-import { IHeader } from "./constants";
+import { useEffect, useMemo, useState } from "react";
+import type { IHeader } from "./constants";
 
 const MIN_COLUMN_WIDTH = 8;
-const SIZES_STORAGE_KEY = "git-history.columnSizes";
+const SIZES_STORAGE_KEY = "git-history.columnSizes.v2";
+
+const AUTO_HIDE_ORDER = ["hash", "graph"];
 
 export function useColumnResize(
 	columns: IHeader[],
-	totalWidth = 0
+	totalWidth = 0,
+	resetToken = 0
 ): {
 	columns: (IHeader & {
 		hasDivider: boolean;
@@ -17,9 +19,13 @@ export function useColumnResize(
 		dragBind: ReturnType<typeof useDrag>;
 	})[];
 } {
+	const visible = useMemo(
+		() => pickVisibleColumns(columns, totalWidth),
+		[columns, totalWidth, resetToken]
+	);
 	const sizes = useMemo(
-		() => getSizes(columns, totalWidth),
-		[columns, totalWidth]
+		() => getSizes(visible, totalWidth),
+		[visible, totalWidth, resetToken]
 	);
 	const [dragStartSizes, setDragStartSizes] = useState(sizes);
 	const [realtimeSizes, setRealTimeSizes] = useState(sizes);
@@ -47,12 +53,15 @@ export function useColumnResize(
 		}
 
 		if (type === "pointerup") {
-			saveColumnSizes(columns, isExceedSize ? realtimeSizes : newSizes);
+			saveColumnSizes(visible, isExceedSize ? realtimeSizes : newSizes, [
+				index - 1,
+				index,
+			]);
 		}
 	});
 
 	return {
-		columns: columns.map((column, index) => ({
+		columns: visible.map((column, index) => ({
 			...column,
 			hasDivider: index !== 0,
 			size: realtimeSizes[index],
@@ -61,22 +70,60 @@ export function useColumnResize(
 	};
 }
 
+function fixedWidth(column: IHeader, storedSizes: Record<string, number>) {
+	if (column.width === "fill") {
+		return 0;
+	}
+	return Math.max(storedSizes[column.prop] ?? column.width, column.minWidth);
+}
+
+function pickVisibleColumns(columns: IHeader[], totalWidth: number): IHeader[] {
+	if (!totalWidth) {
+		return columns;
+	}
+
+	const storedSizes = loadStoredSizes();
+	const fill = columns.find((c) => c.width === "fill");
+	let visible = columns;
+
+	for (const prop of AUTO_HIDE_ORDER) {
+		const fixed = sum(visible.map((c) => fixedWidth(c, storedSizes)));
+		if (!fill || totalWidth - fixed >= fill.minWidth) {
+			break;
+		}
+		visible = visible.filter((c) => c.prop !== prop);
+	}
+
+	return visible;
+}
+
 function getSizes(columns: IHeader[], totalWidth: number) {
 	const storedSizes = loadStoredSizes();
 	let fillIndex = -1;
-	const sizes = columns.map(({ width, prop }, index) => {
-		if (width === "fill") {
+	const sizes = columns.map((column, index) => {
+		if (column.width === "fill") {
 			fillIndex = index;
 			return 0;
 		}
-		return storedSizes[prop] ?? width;
+		return fixedWidth(column, storedSizes);
 	});
 
 	if (fillIndex !== -1) {
-		sizes[fillIndex] = totalWidth - sum(sizes);
+		sizes[fillIndex] = Math.max(
+			totalWidth - sum(sizes),
+			columns[fillIndex].minWidth
+		);
 	}
 
 	return sizes;
+}
+
+export function resetColumnSizes() {
+	try {
+		localStorage.removeItem(SIZES_STORAGE_KEY);
+	} catch {
+		return;
+	}
 }
 
 function loadStoredSizes(): Record<string, number> {
@@ -88,13 +135,18 @@ function loadStoredSizes(): Record<string, number> {
 	}
 }
 
-function saveColumnSizes(columns: IHeader[], sizes: number[]) {
+function saveColumnSizes(
+	columns: IHeader[],
+	sizes: number[],
+	changed: number[]
+) {
 	const storedSizes = loadStoredSizes();
-	columns.forEach((column, index) => {
-		if (column.width !== "fill") {
+	for (const index of changed) {
+		const column = columns[index];
+		if (column && column.width !== "fill") {
 			storedSizes[column.prop] = Math.round(sizes[index]);
 		}
-	});
+	}
 
 	try {
 		localStorage.setItem(SIZES_STORAGE_KEY, JSON.stringify(storedSizes));

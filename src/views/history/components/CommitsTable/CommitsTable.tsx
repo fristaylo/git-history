@@ -1,30 +1,33 @@
+import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import {
-	FC,
+	type FC,
 	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
+	useRef,
 	useState,
 } from "react";
-import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import { useMeasure } from "react-use";
 
 import type { IBatchedCommits } from "../../../../git/types";
 
-import PickableList from "../PickableList/PickableList";
 import { ChannelContext } from "../../data/channel";
+import PickableList from "../PickableList/PickableList";
 
-import { ICommit, parseCommit } from "../../../../git/commit";
+import { type ICommit, parseCommit } from "../../../../git/commit";
 
 import { useBatchCommits } from "./useBatchCommits";
-import { useColumnResize } from "./useColumnResize";
+import { resetColumnSizes, useColumnResize } from "./useColumnResize";
 
 import { HEADERS } from "./constants";
 
 import style from "./CommitsTable.module.scss";
 
-const CommitsTableInner: FC<{ totalWidth: number }> = ({ totalWidth }) => {
+const CommitsTableInner: FC = () => {
 	const channel = useContext(ChannelContext)!;
+
+	const [measureRef, { width: totalWidth }] = useMeasure<HTMLDivElement>();
 
 	const { commits, commitsCount, options, setBatchedCommits } =
 		useBatchCommits();
@@ -100,7 +103,15 @@ const CommitsTableInner: FC<{ totalWidth: number }> = ({ totalWidth }) => {
 		[hiddenProps]
 	);
 
-	const { columns } = useColumnResize(headers, totalWidth);
+	const [resetToken, setResetToken] = useState(0);
+	const { columns } = useColumnResize(headers, totalWidth, resetToken);
+
+	const contentWidth = Math.max(
+		columns.reduce((acc, column) => acc + column.size, 0),
+		totalWidth
+	);
+
+	const headerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		subscribeSwitcher();
@@ -114,90 +125,114 @@ const CommitsTableInner: FC<{ totalWidth: number }> = ({ totalWidth }) => {
 
 	return (
 		<>
-			<div className={style["commit-headers"]}>
-				{columns.map(
-					(
-						{
-							prop,
-							label,
-							filterable,
-							locatable,
-							filterLogOption,
-							hasDivider,
-							size,
-							dragBind,
-						},
-						index
-					) => (
-						<div
-							key={prop}
-							className={style["header-item"]}
-							style={{
-								width: `${size}px`,
-							}}
-						>
-							{hasDivider && (
-								<div
-									{...dragBind(index)}
-									className={style.divider}
-								/>
-							)}
-							{prop === "graph" ? (
-								<VSCodeButton
-									className={style["ref-button"]}
-									data-button
-									appearance="icon"
-									title={`Select Branch/Reference · ${
-										options.ref || "All"
-									}`}
-									aria-label="All"
-									onClick={() => onSelectReference()}
-								>
-									<span className="codicon codicon-git-branch" />
-									<span className={style.text}>
-										{options.ref || "All"}
+			<VSCodeButton
+				appearance="secondary"
+				onClick={() => {
+					resetColumnSizes();
+					setResetToken((token) => token + 1);
+				}}
+			>
+				Reset sizes
+			</VSCodeButton>
+			<div className={style["header-viewport"]}>
+				<div
+					ref={headerRef}
+					className={style["commit-headers"]}
+					style={{ width: `${contentWidth}px` }}
+				>
+					{columns.map(
+						(
+							{
+								prop,
+								label,
+								filterable,
+								locatable,
+								filterLogOption,
+								hasDivider,
+								size,
+								dragBind,
+							},
+							index
+						) => (
+							<div
+								key={prop}
+								className={style["header-item"]}
+								style={{
+									width: `${size}px`,
+								}}
+							>
+								{hasDivider && (
+									<div
+										{...dragBind(index)}
+										className={style.divider}
+									/>
+								)}
+								{prop === "graph" ? (
+									<VSCodeButton
+										className={style["ref-button"]}
+										data-button
+										appearance="icon"
+										title={`Select Branch/Reference · ${
+											options.ref || "All"
+										}`}
+										aria-label="All"
+										onClick={() => onSelectReference()}
+									>
+										<span className="codicon codicon-git-branch" />
+										<span className={style.text}>
+											{options.ref || "All"}
+										</span>
+									</VSCodeButton>
+								) : filterable || locatable ? (
+									<VSCodeButton
+										className={`${style["header-action"]}${
+											filterable &&
+											options[
+												filterLogOption as
+													| "authors"
+													| "keyword"
+											]?.length
+												? ` ${style.active}`
+												: ""
+										}`}
+										appearance="icon"
+										title={label}
+										onClick={() =>
+											filterable
+												? onFilter(prop)
+												: onLocate(prop)
+										}
+									>
+										<span className={style.text}>
+											{label}
+										</span>
+									</VSCodeButton>
+								) : (
+									<span className={style["header-label"]}>
+										{label}
 									</span>
-								</VSCodeButton>
-							) : (
-								<>
-									<span>{label}</span>
-									{filterable && (
-										<VSCodeButton
-											appearance="icon"
-											onClick={() => onFilter(prop)}
-										>
-											<span
-												className={`codicon codicon-filter${
-													options[
-														filterLogOption as
-															| "authors"
-															| "keyword"
-													]?.length
-														? "-filled"
-														: ""
-												}`}
-											/>
-										</VSCodeButton>
-									)}
-									{locatable && (
-										<VSCodeButton
-											appearance="icon"
-											onClick={() => onLocate(prop)}
-										>
-											<span className="codicon codicon-search" />
-										</VSCodeButton>
-									)}
-								</>
-							)}
-						</div>
-					)
-				)}
+								)}
+							</div>
+						)
+					)}
+				</div>
 			</div>
 			<div className={style["commits-area"]}>
 				<PickableList
 					list={commits}
 					keyLength={40}
 					locationIndex={locationIndex}
+					viewportRef={(el) => {
+						if (el) {
+							measureRef(el);
+						}
+					}}
+					contentWidth={contentWidth}
+					onHScroll={(scrollLeft) => {
+						if (headerRef.current) {
+							headerRef.current.style.transform = `translateX(${-scrollLeft}px)`;
+						}
+					}}
 					itemPipe={parseCommit}
 					itemRender={(commit: ICommit) => (
 						<div className={style.commit}>
@@ -223,11 +258,9 @@ const CommitsTableInner: FC<{ totalWidth: number }> = ({ totalWidth }) => {
 };
 
 const CommitsTable: FC = () => {
-	const [ref, { width }] = useMeasure<HTMLDivElement>();
-
 	return (
-		<div ref={ref} className={style.container}>
-			<CommitsTableInner totalWidth={width} />
+		<div className={style.container}>
+			<CommitsTableInner />
 		</div>
 	);
 };

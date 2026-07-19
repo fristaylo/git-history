@@ -1,7 +1,7 @@
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import type { ReactNode } from "react";
 
-import { ICommit, CommitIndex } from "../../../../git/commit";
+import { CommitIndex, type ICommit } from "../../../../git/commit";
 import { CommitGraphSliceIndex } from "../../../../git/types";
 import GitGraph from "../GitGraph/GitGraph";
 import GitTag from "../GitTag/GitTag";
@@ -23,8 +23,8 @@ export const HEADERS: IHeader[] = [
 	{
 		prop: "graph",
 		label: "Graph",
-		width: 70,
-		minWidth: 70,
+		width: 60,
+		minWidth: 60,
 		transformer: (commit) => (
 			<GitGraph data={commit[CommitIndex.GRAPH_SLICE]!} />
 		),
@@ -33,7 +33,7 @@ export const HEADERS: IHeader[] = [
 		prop: "description",
 		label: "Description",
 		width: "fill",
-		minWidth: 180,
+		minWidth: 160,
 		filterable: true,
 		filterLogOption: "keyword",
 		transformer: (commit) => (
@@ -72,8 +72,8 @@ export const HEADERS: IHeader[] = [
 	{
 		prop: "hash",
 		label: "Hash",
-		width: 100,
-		minWidth: 100,
+		width: 75,
+		minWidth: 75,
 		locatable: true,
 		transformer: (commit) => (
 			<>
@@ -94,8 +94,8 @@ export const HEADERS: IHeader[] = [
 	{
 		prop: "author",
 		label: "Author",
-		width: 108,
-		minWidth: 108,
+		width: 90,
+		minWidth: 60,
 		filterable: true,
 		filterLogOption: "authors",
 		transformer: (commit) => commit[CommitIndex.AUTHOR_NAME],
@@ -103,8 +103,8 @@ export const HEADERS: IHeader[] = [
 	{
 		prop: "date",
 		label: "Date/Time",
-		width: 164,
-		minWidth: 164,
+		width: 100,
+		minWidth: 100,
 		transformer: (commit) => commit[CommitIndex.COMMIT_DATE],
 	},
 ];

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useDrag } from "@use-gesture/react";
 import { sortedIndex } from "lodash";
 import classNames from "classnames";
@@ -21,6 +21,9 @@ interface Props<T> {
 	itemRender: (o: T) => ReactNode;
 	size?: number;
 	onPick?: (ids: Id[]) => void;
+	contentWidth?: number;
+	onHScroll?: (scrollLeft: number) => void;
+	viewportRef?: (el: HTMLDivElement | null) => void;
 }
 
 const INDEX_PLACEHOLDER = -1;
@@ -37,9 +40,20 @@ const PickableList = <T extends Record<string, any>>(
 		itemRender,
 		size,
 		onPick,
+		contentWidth,
+		onHScroll,
+		viewportRef,
 	} = props;
-	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 	const dragContainerRef = useRef<HTMLDivElement>(null);
+
+	const setScrollContainer = useCallback(
+		(el: HTMLDivElement | null) => {
+			scrollContainerRef.current = el;
+			viewportRef?.(el);
+		},
+		[viewportRef]
+	);
 
 	const { virtualItems, totalSize, scrollToIndex } = useVirtual({
 		size: size ?? list.length,
@@ -156,15 +170,16 @@ const PickableList = <T extends Record<string, any>>(
 	return (
 		<div
 			{...dragBind()}
-			ref={scrollContainerRef}
+			ref={setScrollContainer}
 			style={{ overflow: "auto" }}
 			className={style.container}
+			onScroll={(e) => onHScroll?.(e.currentTarget.scrollLeft)}
 		>
 			<div
 				ref={dragContainerRef}
 				style={{
 					height: `${totalSize}px`,
-					width: "100%",
+					width: contentWidth ? `${contentWidth}px` : "100%",
 					position: "relative",
 				}}
 			>
