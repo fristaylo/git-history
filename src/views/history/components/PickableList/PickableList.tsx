@@ -1,7 +1,13 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useDrag } from "@use-gesture/react";
-import { sortedIndex } from "lodash";
 import classNames from "classnames";
+import { sortedIndex } from "lodash";
+import {
+	type ReactNode,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 
 import { useVirtual } from "react-virtual";
 
@@ -206,7 +212,7 @@ const PickableList = <T extends Record<string, any>>(
 							top: 0,
 							left: 0,
 							width: "100%",
-							height: "22px",
+							minHeight: "22px",
 							transform: `translateY(${virtualRow.start}px)`,
 						}}
 					>

@@ -15,8 +15,14 @@ import type { IBatchedCommits } from "../../../../git/types";
 import { ChannelContext } from "../../data/channel";
 import PickableList from "../PickableList/PickableList";
 
-import { type ICommit, parseCommit } from "../../../../git/commit";
+import {
+	CommitIndex,
+	type ICommit,
+	parseCommit,
+	splitMessage,
+} from "../../../../git/commit";
 
+import { ExpandContext } from "./CommitMessage";
 import { useBatchCommits } from "./useBatchCommits";
 import { resetColumnSizes, useColumnResize } from "./useColumnResize";
 
@@ -117,6 +123,24 @@ const CommitsTableInner: FC = () => {
 	const headers = useMemo(
 		() => HEADERS.filter((header) => !hiddenProps.has(header.prop)),
 		[hiddenProps]
+	);
+
+	const [expandedHashes, setExpandedHashes] = useState<Set<string>>(
+		new Set()
+	);
+	const expand = useMemo(
+		() => ({
+			isExpanded: (hash: string) => expandedHashes.has(hash),
+			toggle: (hash: string) =>
+				setExpandedHashes((prev) => {
+					const next = new Set(prev);
+					if (!next.delete(hash)) {
+						next.add(hash);
+					}
+					return next;
+				}),
+		}),
+		[expandedHashes]
 	);
 
 	const [resetToken, setResetToken] = useState(0);
@@ -234,41 +258,62 @@ const CommitsTableInner: FC = () => {
 				</div>
 			</div>
 			<div className={style["commits-area"]}>
-				<PickableList
-					list={commits}
-					keyLength={40}
-					locationIndex={locationIndex}
-					divergeIndex={divergeIndex}
-					viewportRef={(el) => {
-						if (el) {
-							measureRef(el);
-						}
-					}}
-					contentWidth={contentWidth}
-					onHScroll={(scrollLeft) => {
-						if (headerRef.current) {
-							headerRef.current.style.transform = `translateX(${-scrollLeft}px)`;
-						}
-					}}
-					itemPipe={parseCommit}
-					itemRender={(commit: ICommit) => (
-						<div className={style.commit}>
-							{columns.map(({ prop, size, transformer }) => (
-								<span
-									style={{
-										width: `${size}px`,
-									}}
-									data-prop={prop}
-									key={prop}
-								>
-									{transformer(commit)}
-								</span>
-							))}
-						</div>
-					)}
-					size={commitsCount}
-					onPick={(ids) => diff(ids)}
-				/>
+				<ExpandContext.Provider value={expand}>
+					<PickableList
+						list={commits}
+						keyLength={40}
+						locationIndex={locationIndex}
+						divergeIndex={divergeIndex}
+						viewportRef={(el) => {
+							if (el) {
+								measureRef(el);
+							}
+						}}
+						contentWidth={contentWidth}
+						onHScroll={(scrollLeft) => {
+							if (headerRef.current) {
+								headerRef.current.style.transform = `translateX(${-scrollLeft}px)`;
+							}
+						}}
+						itemPipe={parseCommit}
+						itemRender={(commit: ICommit) => {
+							const body = expand.isExpanded(
+								commit[CommitIndex.HASH]
+							)
+								? splitMessage(commit[CommitIndex.MESSAGE]).body
+								: "";
+							return (
+								<>
+									<div className={style.commit}>
+										{columns.map(
+											({ prop, size, transformer }) => (
+												<span
+													style={{
+														width: `${size}px`,
+													}}
+													data-prop={prop}
+													key={prop}
+												>
+													{transformer(commit)}
+												</span>
+											)
+										)}
+									</div>
+									{body && (
+										<div
+											data-button
+											className={style["commit-body"]}
+										>
+											{body}
+										</div>
+									)}
+								</>
+							);
+						}}
+						size={commitsCount}
+						onPick={(ids) => diff(ids)}
+					/>
+				</ExpandContext.Provider>
 			</div>
 		</>
 	);

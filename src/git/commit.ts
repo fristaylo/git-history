@@ -1,4 +1,4 @@
-import { ICommitGraphSlice } from "./types";
+import type { ICommitGraphSlice } from "./types";
 
 export type ICommit = [
 	string,
@@ -15,24 +15,38 @@ export type ICommit = [
 export type IRoughCommit = [string, string[], string];
 
 export enum CommitIndex {
-	HASH,
-	REF_NAMES,
-	MESSAGE,
-	PARENTS,
-	COMMIT_DATE,
-	AUTHOR_EMAIL,
-	AUTHOR_NAME,
-	AUTHOR_DATE,
-	GRAPH_SLICE,
+	HASH = 0,
+	REF_NAMES = 1,
+	MESSAGE = 2,
+	PARENTS = 3,
+	COMMIT_DATE = 4,
+	AUTHOR_EMAIL = 5,
+	AUTHOR_NAME = 6,
+	AUTHOR_DATE = 7,
+	GRAPH_SLICE = 8,
 }
 
 export const REFS_SEPARATOR = ", ";
+
+export function splitMessage(message: string): {
+	subject: string;
+	body: string;
+} {
+	const newLine = message.indexOf("\n");
+	if (newLine === -1) {
+		return { subject: message, body: "" };
+	}
+	return {
+		subject: message.slice(0, newLine),
+		body: message.slice(newLine + 1).trim(),
+	};
+}
 
 export function parseCommits(data: string) {
 	const commitRegex =
 		/([0-9a-f]{40})\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)(?:\n([^]*?))?(?:\x00)/gm;
 
-	let commits: IRoughCommit[] = [];
+	const commits: IRoughCommit[] = [];
 
 	let commitData;
 	let ref;

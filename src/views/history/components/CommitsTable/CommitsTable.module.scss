@@ -74,6 +74,17 @@ $col-padding-right: 8px;
 	flex: 1;
 	overflow: hidden;
 
+	.commit-body {
+		margin: 2px 8px 6px 66px;
+		padding: 4px 10px;
+		border-left: 2px solid var(--vscode-panel-border);
+		white-space: pre-wrap;
+		word-break: break-word;
+		color: var(--vscode-descriptionForeground);
+		cursor: text;
+		user-select: text;
+	}
+
 	.commit {
 		cursor: pointer;
 		display: flex;
@@ -125,21 +136,30 @@ $col-padding-right: 8px;
 				justify-content: flex-start;
 				align-items: center;
 
-				> span:first-child {
+				.message {
 					display: flex;
 					align-items: center;
+					min-width: 0;
+					overflow: hidden;
 
-					> span:last-child {
-						white-space: nowrap;
+					.subject {
+						min-width: 0;
 						overflow: hidden;
+						white-space: nowrap;
 						text-overflow: ellipsis;
+					}
+
+					vscode-button {
+						flex-shrink: 0;
 					}
 				}
 
-				&:not(:hover) {
-					vscode-button {
-						display: none;
-					}
+				.comment-active {
+					color: var(--vscode-textLink-foreground);
+				}
+
+				&:not(:hover) vscode-button:not([data-comment]) {
+					display: none;
 				}
 			}
 

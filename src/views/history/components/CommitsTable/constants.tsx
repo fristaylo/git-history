@@ -2,9 +2,9 @@ import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import type { ReactNode } from "react";
 
 import { CommitIndex, type ICommit } from "../../../../git/commit";
-import { CommitGraphSliceIndex } from "../../../../git/types";
 import GitGraph from "../GitGraph/GitGraph";
-import GitTag from "../GitTag/GitTag";
+
+import CommitMessage from "./CommitMessage";
 
 type FillRemainWidth = "fill";
 
@@ -36,38 +36,7 @@ export const HEADERS: IHeader[] = [
 		minWidth: 160,
 		filterable: true,
 		filterLogOption: "keyword",
-		transformer: (commit) => (
-			<>
-				<span>
-					{commit[CommitIndex.REF_NAMES].map((refName) => (
-						<GitTag
-							key={refName}
-							refName={refName}
-							color={
-								commit[CommitIndex.GRAPH_SLICE]![
-									CommitGraphSliceIndex.COMMIT_COLOR
-								]
-							}
-						/>
-					))}
-					<span title={commit[CommitIndex.MESSAGE]}>
-						{commit[CommitIndex.MESSAGE]}
-					</span>
-				</span>
-				<VSCodeButton
-					data-button
-					appearance="icon"
-					onClick={() =>
-						navigator.clipboard.writeText(
-							commit[CommitIndex.MESSAGE]
-						)
-					}
-					title="Copy Message"
-				>
-					<span className="codicon codicon-copy" />
-				</VSCodeButton>
-			</>
-		),
+		transformer: (commit) => <CommitMessage commit={commit} />,
 	},
 	{
 		prop: "hash",
