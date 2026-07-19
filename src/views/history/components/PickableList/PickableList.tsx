@@ -17,6 +17,7 @@ interface Props<T> {
 	list: string[];
 	keyLength: number;
 	locationIndex?: number;
+	divergeIndex?: number;
 	itemPipe: (item: string) => T;
 	itemRender: (o: T) => ReactNode;
 	size?: number;
@@ -36,6 +37,7 @@ const PickableList = <T extends Record<string, any>>(
 		list,
 		keyLength,
 		locationIndex,
+		divergeIndex,
 		itemPipe,
 		itemRender,
 		size,
@@ -195,6 +197,9 @@ const PickableList = <T extends Record<string, any>>(
 									list[virtualRow.index].slice(0, keyLength)
 								),
 							[style.located]: virtualRow.index === locationIndex,
+							[style.diverged]:
+								typeof divergeIndex === "number" &&
+								virtualRow.index >= divergeIndex,
 						})}
 						style={{
 							position: "absolute",

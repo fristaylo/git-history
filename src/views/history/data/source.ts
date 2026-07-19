@@ -161,6 +161,16 @@ export class Source {
 		window.showWarningMessage(message);
 	}
 
+	@link("promise")
+	async getMergeBase() {
+		const { repo, ref } = state.logOptions;
+		const current = this.git.getCurrentBranch(repo);
+		if (!ref || !current || ref === current) {
+			return "";
+		}
+		return (await this.git.getMergeBase(repo || "", current, ref)) || "";
+	}
+
 	@link("subscription")
 	async getCommits(
 		handler: (batchedCommits: IBatchedCommits) => void,

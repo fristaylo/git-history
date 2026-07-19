@@ -9,6 +9,14 @@
 .item {
 	width: 100%;
 
+	&.diverged {
+		background-color: rgba(255, 102, 102, 0.08);
+
+		&:hover {
+			background-color: rgba(255, 102, 102, 0.12);
+		}
+	}
+
 	&:hover {
 		background-color: var(--vscode-list-hoverBackground);
 	}

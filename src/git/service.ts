@@ -259,6 +259,14 @@ export class GitService {
 			.catch((err) => console.log(err));
 	}
 
+	async getMergeBase(repo: string, refA: string, refB: string) {
+		return await this.git
+			?.cwd(repo || this.rootRepoPath)
+			.raw(["merge-base", refA, refB])
+			.then((res) => res.trim())
+			.catch(() => "");
+	}
+
 	async getChangesCollection(repoPath: string, refs: string[]) {
 		return await Promise.all(
 			refs.map((ref) =>

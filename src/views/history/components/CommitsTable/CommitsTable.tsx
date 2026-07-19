@@ -94,6 +94,22 @@ const CommitsTableInner: FC = () => {
 		[channel, commits]
 	);
 
+	const [mergeBaseHash, setMergeBaseHash] = useState<string>("");
+
+	useEffect(() => {
+		channel.getMergeBase().then(setMergeBaseHash);
+	}, [channel, options.ref]);
+
+	const divergeIndex = useMemo(() => {
+		if (!mergeBaseHash) {
+			return undefined;
+		}
+		const index = commits.findIndex((commit) =>
+			commit.startsWith(mergeBaseHash)
+		);
+		return index === -1 ? undefined : index;
+	}, [commits, mergeBaseHash]);
+
 	// Column visibility is owned by the extension and toggled from the native
 	// "Toggle Columns" menu in the view title; we just render what it sends.
 	const [hiddenProps, setHiddenProps] = useState<Set<string>>(new Set());
@@ -222,6 +238,7 @@ const CommitsTableInner: FC = () => {
 					list={commits}
 					keyLength={40}
 					locationIndex={locationIndex}
+					divergeIndex={divergeIndex}
 					viewportRef={(el) => {
 						if (el) {
 							measureRef(el);
