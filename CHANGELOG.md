@@ -2,6 +2,20 @@
 
 All notable changes to the "Yummy GitHistory" extension are documented in this file.
 
+## [1.1.0] - 2026-07-20
+
+### Added
+
+- Collapsible commit descriptions: the list shows only the subject, with a
+  comment icon to preview (hover) or expand (click) the body.
+- Merge-base divergence highlighting in the commits table.
+- Branch-follow mode for the log view.
+- Horizontal scroll, column auto-hide, and a reset-sizes button.
+
+### Changed
+
+- Tags hide `HEAD` and mark current/remote references.
+
 ## [1.0.2] - 2026-07-08
 
 ### Changed

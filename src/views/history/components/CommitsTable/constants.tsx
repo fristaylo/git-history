@@ -26,7 +26,7 @@ export const HEADERS: IHeader[] = [
 		width: 60,
 		minWidth: 60,
 		transformer: (commit) => (
-			<GitGraph data={commit[CommitIndex.GRAPH_SLICE]!} />
+			<GitGraph data={commit[CommitIndex.GRAPH_SLICE]} />
 		),
 	},
 	{

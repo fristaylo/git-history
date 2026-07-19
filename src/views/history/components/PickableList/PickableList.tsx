@@ -93,7 +93,10 @@ const PickableList = <T extends Record<string, any>>(
 				: {};
 		const firstItemIndex = virtualItems[0].index;
 		if (type === "pointerdown") {
-			const scrollContainerEl = scrollContainerRef.current!;
+			const scrollContainerEl = scrollContainerRef.current;
+			if (!scrollContainerEl) {
+				return;
+			}
 
 			const isPointerOnButton = !!(target as HTMLElement).closest(
 				"[data-button]"
@@ -124,7 +127,7 @@ const PickableList = <T extends Record<string, any>>(
 			setItemYs(realTimeItemYs);
 			setDragStartIndex(dragStartIndex);
 
-			const id = list![dragStartIndex].slice(0, keyLength);
+			const id = list[dragStartIndex].slice(0, keyLength);
 			setPickedItems({
 				...existedItems,
 				[id]: dragStartIndex,
@@ -138,12 +141,11 @@ const PickableList = <T extends Record<string, any>>(
 			}
 
 			setDragStartIndex(INDEX_PLACEHOLDER);
-			onPick &&
-				onPick(
-					Object.keys(pickedItems!).sort(
-						(id1, id2) => pickedItems[id1] - pickedItems[id2]
-					)
-				);
+			onPick?.(
+				Object.keys(pickedItems).sort(
+					(id1, id2) => pickedItems[id1] - pickedItems[id2]
+				)
+			);
 			return;
 		}
 
@@ -165,7 +167,7 @@ const PickableList = <T extends Record<string, any>>(
 				index <= Math.max(dragStartIndex, currentIndex);
 				index++
 			) {
-				const id = list![index].slice(0, keyLength);
+				const id = list[index].slice(0, keyLength);
 				if (!Object.prototype.hasOwnProperty.call(currentItems, id)) {
 					currentItems[id] = index;
 				}

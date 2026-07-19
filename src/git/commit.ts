@@ -9,7 +9,7 @@ export type ICommit = [
 	string,
 	string,
 	string,
-	ICommitGraphSlice?,
+	ICommitGraphSlice,
 ];
 
 export type IRoughCommit = [string, string[], string];
@@ -28,6 +28,8 @@ export enum CommitIndex {
 
 export const REFS_SEPARATOR = ", ";
 
+const RECORD_SEPARATOR = String.fromCharCode(0);
+
 export function splitMessage(message: string): {
 	subject: string;
 	body: string;
@@ -43,56 +45,41 @@ export function splitMessage(message: string): {
 }
 
 export function parseCommits(data: string) {
-	const commitRegex =
-		/([0-9a-f]{40})\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)(?:\n([^]*?))?(?:\x00)/gm;
+	const commitRegex = new RegExp(
+		String.raw`([0-9a-f]{40})\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)(?:\n([\s\S]*?))?(?:${RECORD_SEPARATOR})`,
+		"gm"
+	);
 
 	const commits: IRoughCommit[] = [];
 
-	let commitData;
-	let ref;
-	let parents;
-	let match;
+	let match = commitRegex.exec(data);
+	while (match !== null) {
+		const [commitData, ref, , , , , , parents] = match;
 
-	do {
-		match = commitRegex.exec(data);
-		if (match === null) {
-			break;
-		}
-
-		[commitData, ref, , , , , , parents] = match;
-
-		const commit: IRoughCommit = [
+		commits.push([
 			` ${ref}`.substr(1),
 			parents ? parents.split(" ") : [],
 			commitData,
-		];
+		]);
 
-		commits.push(commit);
-	} while (true);
+		match = commitRegex.exec(data);
+	}
 
 	return commits;
 }
 
 export function parseCommit(commitData: string): ICommit {
-	const commitRegex =
-		/([0-9a-f]{40})\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)(?:\n([^]*?))?(?:\x00)(.*)\n(.*)\n(.*)/g;
+	const commitRegex = new RegExp(
+		String.raw`([0-9a-f]{40})\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)\n(.*)(?:\n([\s\S]*?))?(?:${RECORD_SEPARATOR})(.*)\n(.*)\n(.*)`,
+		"g"
+	);
 
-	let ref;
-	let refNames;
-	let authorName;
-	let authorEmail;
-	let authorDate;
-	let commitDate;
-	let parents;
-	let message;
-	let commitPosition;
-	let commitColor;
-	let stringifiedLines;
-	let match;
+	const match = commitRegex.exec(commitData);
+	if (match === null) {
+		throw new Error("Failed to parse commit");
+	}
 
-	match = commitRegex.exec(commitData)!;
-
-	[
+	const [
 		,
 		ref,
 		refNames,
@@ -101,15 +88,15 @@ export function parseCommit(commitData: string): ICommit {
 		authorDate,
 		commitDate,
 		parents,
-		message,
+		rawMessage,
 		commitPosition,
 		commitColor,
 		stringifiedLines,
 	] = match;
 
-	if (message[message.length - 1] === "\n") {
-		message = message.substr(0, message.length - 1);
-	}
+	const message = rawMessage.endsWith("\n")
+		? rawMessage.slice(0, -1)
+		: rawMessage;
 
 	return [
 		` ${ref}`.substr(1),

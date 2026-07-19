@@ -31,16 +31,19 @@ import { HEADERS } from "./constants";
 import style from "./CommitsTable.module.scss";
 
 const CommitsTableInner: FC = () => {
-	const channel = useContext(ChannelContext)!;
+	const channel = useContext(ChannelContext);
+	if (!channel) {
+		throw new Error("ChannelContext is not provided");
+	}
 
 	const [measureRef, { width: totalWidth }] = useMeasure<HTMLDivElement>();
 
 	const { commits, commitsCount, options, setBatchedCommits } =
 		useBatchCommits();
 
-	function diff(sortedRefs: string[]) {
+	const diff = (sortedRefs: string[]) => {
 		channel.viewChanges(sortedRefs);
-	}
+	};
 
 	const subscribeSwitcher = useCallback(() => {
 		channel.subscribeSwitcher((batchedCommits: IBatchedCommits) =>
@@ -75,7 +78,7 @@ const CommitsTableInner: FC = () => {
 	const onLocate = useCallback(
 		async (prop: string) => {
 			switch (prop) {
-				case "hash":
+				case "hash": {
 					const hash = await channel.inputHash();
 					if (!hash) {
 						return;
@@ -95,6 +98,7 @@ const CommitsTableInner: FC = () => {
 						setLocationIndex(undefined);
 					}, 1500);
 					break;
+				}
 			}
 		},
 		[channel, commits]
@@ -103,7 +107,7 @@ const CommitsTableInner: FC = () => {
 	const [mergeBaseHash, setMergeBaseHash] = useState<string>("");
 
 	useEffect(() => {
-		channel.getMergeBase().then(setMergeBaseHash);
+		channel.getMergeBase(options.ref).then(setMergeBaseHash);
 	}, [channel, options.ref]);
 
 	const divergeIndex = useMemo(() => {

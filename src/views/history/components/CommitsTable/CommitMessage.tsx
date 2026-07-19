@@ -41,7 +41,7 @@ const CommitMessage: FC<Props> = ({ commit }) => {
 						key={refName}
 						refName={refName}
 						color={
-							commit[CommitIndex.GRAPH_SLICE]![
+							commit[CommitIndex.GRAPH_SLICE][
 								CommitGraphSliceIndex.COMMIT_COLOR
 							]
 						}

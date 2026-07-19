@@ -1,23 +1,23 @@
-import { parse } from "path";
+import { parse } from "node:path";
 
 import { inject, injectable } from "inversify";
 import {
-	window,
-	commands,
-	ExtensionContext,
-	workspace,
 	EventEmitter,
+	type ExtensionContext,
+	commands,
+	window,
+	workspace,
 } from "vscode";
 
 import { debounce } from "lodash";
 
-import { GitService } from "../../../git/service";
-import { GitGraph } from "../../../git/graph";
 import {
-	PathCollection,
+	type PathCollection,
 	resolveChangesCollection,
 } from "../../../git/changes/tree";
-import { ChangeTreeDataProvider } from "../../changes/changeTreeDataProvider";
+import type { GitGraph } from "../../../git/graph";
+import type { GitService } from "../../../git/service";
+import type { ChangeTreeDataProvider } from "../../changes/changeTreeDataProvider";
 
 import type { IBatchedCommits, LogOptions } from "../../../git/types";
 
@@ -47,7 +47,8 @@ export class Source {
 	private commitsEventEmitter = new EventEmitter<{ totalCount: number }>();
 
 	constructor(
-		@inject(Symbol.for("ExtensionContext")) private context: ExtensionContext,
+		@inject(Symbol.for("ExtensionContext"))
+		private context: ExtensionContext,
 		private git: GitService,
 		private graph: GitGraph,
 		private ChangeTreeDataProvider: ChangeTreeDataProvider
@@ -162,8 +163,8 @@ export class Source {
 	}
 
 	@link("promise")
-	async getMergeBase() {
-		const { repo, ref } = state.logOptions;
+	async getMergeBase(ref?: string) {
+		const { repo } = state.logOptions;
 		const current = this.git.getCurrentBranch(repo);
 		if (!ref || !current || ref === current) {
 			return "";
