@@ -2,6 +2,17 @@
 
 All notable changes to the "Yummy GitHistory" extension are documented in this file.
 
+## [1.1.2] - 2026-07-20
+
+### Changed
+
+- Explicitly size the tag/branch icons so they no longer inherit the default
+  codicon font size.
+
+### Removed
+
+- The "Reset sizes" button and its column-size reset logic.
+
 ## [1.1.1] - 2026-07-20
 
 ### Fixed
