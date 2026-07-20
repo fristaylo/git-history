@@ -2,6 +2,13 @@
 
 All notable changes to the "Yummy GitHistory" extension are documented in this file.
 
+## [1.1.1] - 2026-07-20
+
+### Fixed
+
+- Extension failed to activate: dependency-injection bindings for `Source`
+  could not be resolved.
+
 ## [1.1.0] - 2026-07-20
 
 ### Added

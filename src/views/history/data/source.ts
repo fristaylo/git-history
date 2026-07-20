@@ -1,4 +1,4 @@
-import { parse } from "node:path";
+import { parse } from "path";
 
 import { inject, injectable } from "inversify";
 import {
@@ -15,9 +15,9 @@ import {
 	type PathCollection,
 	resolveChangesCollection,
 } from "../../../git/changes/tree";
-import type { GitGraph } from "../../../git/graph";
-import type { GitService } from "../../../git/service";
-import type { ChangeTreeDataProvider } from "../../changes/changeTreeDataProvider";
+import { GitGraph } from "../../../git/graph";
+import { GitService } from "../../../git/service";
+import { ChangeTreeDataProvider } from "../../changes/changeTreeDataProvider";
 
 import type { IBatchedCommits, LogOptions } from "../../../git/types";
 
