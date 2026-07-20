@@ -24,7 +24,7 @@ import {
 
 import { ExpandContext } from "./CommitMessage";
 import { useBatchCommits } from "./useBatchCommits";
-import { resetColumnSizes, useColumnResize } from "./useColumnResize";
+import { useColumnResize } from "./useColumnResize";
 
 import { HEADERS } from "./constants";
 
@@ -147,8 +147,7 @@ const CommitsTableInner: FC = () => {
 		[expandedHashes]
 	);
 
-	const [resetToken, setResetToken] = useState(0);
-	const { columns } = useColumnResize(headers, totalWidth, resetToken);
+	const { columns } = useColumnResize(headers, totalWidth);
 
 	const contentWidth = Math.max(
 		columns.reduce((acc, column) => acc + column.size, 0),
@@ -169,15 +168,6 @@ const CommitsTableInner: FC = () => {
 
 	return (
 		<>
-			<VSCodeButton
-				appearance="secondary"
-				onClick={() => {
-					resetColumnSizes();
-					setResetToken((token) => token + 1);
-				}}
-			>
-				Reset sizes
-			</VSCodeButton>
 			<div className={style["header-viewport"]}>
 				<div
 					ref={headerRef}

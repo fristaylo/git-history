@@ -8,8 +8,7 @@ const AUTO_HIDE_ORDER = ["hash", "graph"];
 
 export function useColumnResize(
 	columns: IHeader[],
-	totalWidth = 0,
-	resetToken = 0
+	totalWidth = 0
 ): {
 	columns: (IHeader & {
 		hasDivider: boolean;
@@ -19,11 +18,11 @@ export function useColumnResize(
 } {
 	const visible = useMemo(
 		() => pickVisibleColumns(columns, totalWidth),
-		[columns, totalWidth, resetToken]
+		[columns, totalWidth]
 	);
 	const sizes = useMemo(
 		() => getSizes(visible, totalWidth),
-		[visible, totalWidth, resetToken]
+		[visible, totalWidth]
 	);
 	const [dragStartSizes, setDragStartSizes] = useState(sizes);
 	const [realtimeSizes, setRealTimeSizes] = useState(sizes);
@@ -114,14 +113,6 @@ function getSizes(columns: IHeader[], totalWidth: number) {
 	}
 
 	return sizes;
-}
-
-export function resetColumnSizes() {
-	try {
-		localStorage.removeItem(SIZES_STORAGE_KEY);
-	} catch {
-		return;
-	}
 }
 
 function loadStoredSizes(): Record<string, number> {
