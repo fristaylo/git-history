@@ -13,6 +13,8 @@ All notable changes to the "Yummy GitHistory" extension are documented in this f
 ### Changed
 
 - Requires VS Code 1.82 or newer.
+- Extension ID changed to `fristaylo.git-history`: uninstall the old
+  `YummyGroup.yummy-githistory`.
 
 ## [1.1.3] - 2026-09-25
 
