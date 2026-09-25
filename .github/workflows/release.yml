@@ -13,7 +13,7 @@ jobs:
     if: contains(toJSON(github.event.commits.*.message), '--fix')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: version
         run: echo "tag=v$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
       - name: Version must be bumped
@@ -24,7 +24,7 @@ jobs:
           fi
       - uses: oven-sh/setup-bun@v2
       - run: bun install
-      - run: bun run vsix
+      - run: mkdir -p releases && bun run vsix
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
