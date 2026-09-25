@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Tag must match package.json version
+        run: test "${GITHUB_REF_NAME#v}" = "$(jq -r .version package.json)"
+      - run: bun install
+      - run: bun run vsix
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: releases/*.vsix
+          generate_release_notes: true

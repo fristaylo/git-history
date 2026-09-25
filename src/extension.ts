@@ -2,8 +2,10 @@ import { ExtensionContext, window, workspace } from "vscode";
 
 import { container, initializeContainer } from "./container/inversify.config";
 import { DisposableController } from "./disposables";
+import { checkForUpdate } from "./update";
 
 export function activate(context: ExtensionContext) {
+	checkForUpdate(context).catch((e) => console.warn("Yummy GitHistory: update check failed", e));
 	console.log('Congratulations, your extension "git-history" is now active!');
 
 	if (!workspace.workspaceFolders?.length) {

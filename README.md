@@ -39,7 +39,7 @@ All commands are available under the **Git History** category (and via the view 
 ## Contributing & issues
 
 Found a bug or have a feature request? Please open an issue at
-[github.com/yummyanime/yummy-githistory/issues](https://github.com/yummyanime/yummy-githistory/issues).
+[github.com/fristaylo/git-history/issues](https://github.com/fristaylo/git-history/issues).
 
 ## License
 

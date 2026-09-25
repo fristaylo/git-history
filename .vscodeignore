@@ -14,3 +14,4 @@ bun.lockb
 **/*.ts
 releases/**
 .claude/**
+.github/**

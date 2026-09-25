@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "yummy-githistory",
+      "name": "git-history",
       "dependencies": {
         "@use-gesture/react": "^10.1.3",
         "@vscode/codicons": "^0.0.30",

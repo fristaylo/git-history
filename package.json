@@ -1,5 +1,5 @@
 {
-	"name": "yummy-githistory",
+	"name": "git-history",
 	"displayName": "Yummy GitHistory",
 	"description": "Git history panel in your VS Code",
 	"keywords": [
@@ -14,20 +14,20 @@
 		"flow",
 		"tag"
 	],
-	"version": "1.1.3",
+	"version": "1.2.0",
 	"license": "MIT",
 	"icon": "assets/logo/logo.png",
-	"publisher": "YummyGroup",
+	"publisher": "fristaylo",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/yummyanime/yummy-githistory.git"
+		"url": "https://github.com/fristaylo/git-history.git"
 	},
 	"bugs": {
-		"url": "https://github.com/yummyanime/yummy-githistory/issues"
+		"url": "https://github.com/fristaylo/git-history/issues"
 	},
-	"homepage": "https://github.com/yummyanime/yummy-githistory#readme",
+	"homepage": "https://github.com/fristaylo/git-history#readme",
 	"engines": {
-		"vscode": "^1.74.0"
+		"vscode": "^1.82.0"
 	},
 	"categories": [
 		"Other",
@@ -596,7 +596,7 @@
 		"watch:worker": "vite build --watch --config vite.worker.config.ts",
 		"watch:view": "vite build --watch --config vite.config.ts",
 		"typecheck": "tsc --noEmit",
-		"vsix": "bunx @vscode/vsce package -o releases/",
+		"vsix": "bunx @vscode/vsce package --no-dependencies -o releases/",
 		"format": "biome format --write .",
 		"lint": "biome lint .",
 		"check": "biome check --write .",

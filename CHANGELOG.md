@@ -2,6 +2,18 @@
 
 All notable changes to the "Yummy GitHistory" extension are documented in this file.
 
+## [1.2.0] - 2026-09-26
+
+### Added
+
+- The extension updates itself from GitHub Releases of
+  [fristaylo/git-history](https://github.com/fristaylo/git-history): on startup
+  it installs a newer `.vsix` if there is one and offers to reload the window.
+
+### Changed
+
+- Requires VS Code 1.82 or newer.
+
 ## [1.1.3] - 2026-09-25
 
 ### Fixed
