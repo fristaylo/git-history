@@ -596,7 +596,7 @@
 		"watch:worker": "vite build --watch --config vite.worker.config.ts",
 		"watch:view": "vite build --watch --config vite.config.ts",
 		"typecheck": "tsc --noEmit",
-		"publish:npm": "node scripts/publish-npm.mjs",
+		"vsix": "bunx @vscode/vsce package -o releases/",
 		"format": "biome format --write .",
 		"lint": "biome lint .",
 		"check": "biome check --write .",

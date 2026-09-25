@@ -12,5 +12,5 @@ bun.lockb
 **/*.config.ts
 **/*.map
 **/*.ts
-scripts/**
+releases/**
 .claude/**
