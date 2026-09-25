@@ -131,9 +131,7 @@ export class Source {
 
 	@link("subscription")
 	async switchReference() {
-		state.logOptions.ref = await commands.executeCommand<string>(
-			SWITCH_BRANCH_COMMAND
-		);
+		await commands.executeCommand(SWITCH_BRANCH_COMMAND);
 	}
 
 	@link("subscription")

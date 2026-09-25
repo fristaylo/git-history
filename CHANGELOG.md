@@ -2,6 +2,15 @@
 
 All notable changes to the "Yummy GitHistory" extension are documented in this file.
 
+## [1.1.3] - 2026-09-25
+
+### Fixed
+
+- The selected branch in the History view no longer jumps back to the
+  checked-out branch after a commit, push, fetch or other repository change.
+  Selecting a ref from the Branches view or switching repository now disables
+  HEAD following, and cancelling the ref picker no longer resets the ref.
+
 ## [1.1.2] - 2026-07-20
 
 ### Changed

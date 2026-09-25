@@ -27,6 +27,7 @@ export function getBranchCommandsDisposable() {
 		commands.registerCommand(
 			SWITCH_TO_REF_COMMAND,
 			async (ref?: string, repoPath?: string) => {
+				state.followHead = false;
 				state.logOptions = {
 					repo: repoPath || state.logOptions.repo,
 					ref: ref || "",

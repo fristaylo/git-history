@@ -76,6 +76,7 @@ export function getSwitchCommandsDisposable() {
 					return;
 				}
 
+				state.followHead = false;
 				state.logOptions = { repo };
 				source.getCommits(switchSubscriber, state.logOptions);
 				quickPick.dispose();
