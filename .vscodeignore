@@ -13,3 +13,4 @@ bun.lockb
 **/*.map
 **/*.ts
 scripts/**
+.claude/**
